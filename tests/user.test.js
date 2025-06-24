@@ -13,16 +13,20 @@ beforeAll(async ()=>{
   await mongoose.connect(process.env.MONGO_URI)
 })
 
-afterEach(async () => {
-  await User.deleteMany({ email: "john@example.com" }); // Adjust if needed
-});
+// afterEach(async () => {
+//   await User.deleteMany({ email: "john@example.com" }); // Adjust if needed
+// });
 
 
 afterAll( async ()=>{
-  await mongoose.disconnect()
+  await User.deleteMany({ email: "john@example.com" }); // Adjust if needed
+  await mongoose.disconnect();
 })
 
 describe("User API", () => {
+
+  let userID;
+  
   it("should return all users (empty or not)", async () => {
     const res = await request.get("/API/users");
     expect(res.statusCode).toBe(200)
@@ -46,7 +50,21 @@ describe("User API", () => {
       email: "john@example.com",
       status: "active",
     });
+
+    const user= await User.findOne({name:"John"})
+   
+    userID = user._id.toString();
     expect(res.statusCode).toBe(201);
     expect(res.body.msg).toBe("User Created Succesfully");
   });
+
+  it("should delete a user successfully",async ()=>{
+    const res = await request.delete(`/API/remove_user/${userID}`);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.msg).toBe("User Deleted Successfully");
+  })
+
+
+
+
 });

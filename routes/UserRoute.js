@@ -47,11 +47,11 @@ UserRoute.delete("/remove_user/:id", async (req,res)=>{
     const {id}= req.params
     const deletedData= await User.findOneAndDelete({_id:id})
     if(!deletedData){
-      return res.status(400).json({msg:"User Not found"})
+      return res.status(404).json({msg:"User Not found"})
     }
     res.status(200).json({msg:"User Deleted Successfully", DeletedUser:deletedData})
   } catch (error) {
-    res.status(500).json({ msg: "Server Error" });
+    res.status(400).json({ msg: "Server Error" });
   }
 })
 
