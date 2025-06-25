@@ -61,7 +61,7 @@ describe("User API", () => {
   it("should delete a user successfully",async ()=>{
     const res = await request.delete(`/API/remove_user/${userID}`);
     expect(res.statusCode).toBe(200);
-    expect(res.body.msg).toBe("User Deleted Successfully");
+    expect(res.body.msg).toBe("User Deleted Successfullys");
   })
 
 
