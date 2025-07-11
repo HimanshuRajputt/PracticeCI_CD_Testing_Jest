@@ -91,3 +91,13 @@ jobs:
 
       - name: Push Docker Image to Docker Hub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/my-backend-test-1:latest
+
+  Render:
+    runs-on: ubuntu-latest
+    needs: docker
+    if: success()
+
+    steps:
+      - name: Trigger Render Deploy
+        run: curl -X GET "${{ secrets.RENDER_DEPLOY_HOOK }}"
+        
